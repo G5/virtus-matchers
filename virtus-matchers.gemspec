@@ -24,6 +24,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rspec', "~> 2.14"
-  s.add_development_dependency 'guard-rspec'
-  s.add_development_dependency 'rb-fsevent'
 end

@@ -1,4 +1,4 @@
-# TBA
+# v0.3.0 - 2016-08-12
 
 - Only include matchers with RSpec specs that are tagged: `type: :virtus`
 

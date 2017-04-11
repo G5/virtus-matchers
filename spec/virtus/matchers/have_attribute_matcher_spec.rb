@@ -2,7 +2,11 @@
 require 'spec_helper'
 
 RSpec.describe Virtus::Matchers::HaveAttributeMatcher do
-  class FakeCoercer; end
+  class FakeCoercer
+    def self.call(val)
+
+    end
+  end
 
   class Example
     include Virtus.model
@@ -19,46 +23,46 @@ RSpec.describe Virtus::Matchers::HaveAttributeMatcher do
     attribute :lenient, String
   end
 
-  context 'when attribute is defined', 'with no type' do
+  context 'when attribute is defined with no type' do
     let(:matcher) { described_class.new(:any) }
 
     it 'should match' do
-      matcher.matches?(Example).should be_true
+      expect(matcher.matches?(Example)).to be true
     end
 
     it 'should have a description' do
       matcher.matches?(Example)
-      matcher.description.should == 'have attribute any'
+      expect(matcher.description).to eq 'have attribute any'
     end
   end
 
-  context 'when attribute is defined', 'with simple type' do
+  context 'when attribute is defined with simple type' do
     let(:matcher) { described_class.new(:foo, String) }
 
     it 'should match' do
-      matcher.matches?(Example).should be_true
+      expect(matcher.matches?(Example)).to be true
     end
 
     it 'should have a description' do
       matcher.matches?(Example)
-      matcher.description.should == 'have attribute foo of type String'
+      expect(matcher.description).to eq 'have attribute foo of type String'
     end
   end
 
-  context 'when attribute is defined', 'with array type', 'and correct member type' do
+  context 'when attribute is defined with array type and correct member type' do
     let(:matcher) { described_class.new(:bar, Array[String]) }
 
     it 'should match' do
-      matcher.matches?(Example).should be_true
+      expect(matcher.matches?(Example)).to be true
     end
 
     it 'should have a description' do
       matcher.matches?(Example)
-      matcher.description.should == 'have attribute bar of type Array[String]'
+      expect(matcher.description).to eq 'have attribute bar of type Array[String]'
     end
   end
 
-  context 'when attribute is defined', 'with array type', 'with default' do
+  context 'when attribute is defined with array type with default' do
     let(:matcher) do
       described_class.
         new(:array_attribute_with_default, Array[String]).
@@ -67,84 +71,84 @@ RSpec.describe Virtus::Matchers::HaveAttributeMatcher do
     let(:array_default) { ['hello', 'world'] }
 
     it 'should match' do
-      matcher.matches?(Example).should be_true
+      expect(matcher.matches?(Example)).to be true
     end
 
     context 'different array default' do
       let(:array_default) { ['different', 'default'] }
       it 'should not match' do
-        matcher.matches?(Example).should be_false
+        expect(matcher.matches?(Example)).to be false
       end
     end
 
     it 'should have a description' do
       matcher.matches?(Example)
-      matcher.description.should == "have attribute array_attribute_with_default of type Array[String] with default \"[\"hello\", \"world\"]\""
+      expect(matcher.description).to eq "have attribute array_attribute_with_default of type Array[String] with default \"[\"hello\", \"world\"]\""
     end
   end
 
-  context 'when attribute is defined', 'with a valid coercer' do
+  context 'when attribute is defined with a valid coercer' do
     let(:matcher) { described_class.new(:lol, DateTime).coerced_with(FakeCoercer) }
 
     it 'should match' do
-      matcher.matches?(Example).should be_true
+      expect(matcher.matches?(Example)).to be true
     end
 
     it 'should have a description' do
       matcher.matches?(Example)
-      matcher.description.should == 'have attribute lol of type DateTime coerced with FakeCoercer'
+      expect(matcher.description).to eq 'have attribute lol of type DateTime coerced with FakeCoercer'
     end
   end
 
-  context 'when attribute is defined', 'with invalid coercer' do
+  context 'when attribute is defined with invalid coercer' do
     let(:matcher) { described_class.new(:lol, DateTime).coerced_with(String) }
 
     it 'should not match' do
-      matcher.matches?(Example).should be_false
+      expect(matcher.matches?(Example)).to be false
     end
 
     it 'should have a failure message' do
       matcher.matches?(Example)
-      matcher.failure_message.should == "expected #{Example} to have attribute lol of type DateTime coerced with FakeCoercer"
+      expect(matcher.failure_message).to eq "expected #{Example} to have attribute lol of type DateTime coerced with FakeCoercer"
     end
   end
 
-  context 'when attribute is defined', 'with array type', 'and no member type' do
+  context 'when attribute is defined with array type and no member type' do
     let(:matcher) { described_class.new(:baz, Array) }
 
     it 'should match' do
-      matcher.matches?(Example).should be_true
+      expect(matcher.matches?(Example)).to be true
     end
 
     it 'should have a description' do
       matcher.matches?(Example)
-      matcher.description.should == 'have attribute baz of type Array'
+      expect(matcher.description).to eq 'have attribute baz of type Array'
     end
   end
 
-  context 'when attribute is defined', 'with array type', 'but wrong member type' do
+  context 'when attribute is defined with array type but wrong member type' do
     let(:matcher) { described_class.new(:bar, Array[Integer]) }
 
     it 'should not match' do
-      matcher.matches?(Example).should be_false
+      expect(matcher.matches?(Example)).to be false
     end
 
     it 'should have a failure message' do
       matcher.matches?(Example)
-      matcher.failure_message.should == "expected #{Example} to have attribute bar of type Array[Integer]"
+      expect(matcher.failure_message).to eq "expected #{Example} to have attribute bar of type Array[Integer]"
     end
   end
 
-  context 'when attribute is defined', 'with wrong type' do
+  context 'when attribute is defined with wrong type' do
     let(:matcher) { described_class.new(:foo, Hash) }
 
     it 'should not match' do
-      matcher.matches?(Example).should be_false
+      expect(matcher.matches?(Example)).to be false
     end
 
     it 'should have a failure message' do
       matcher.matches?(Example)
-      matcher.failure_message.should == "expected #{Example} to have attribute foo of type Hash"
+      expect(matcher.failure_message).to eq "expected #{Example} to have attribute foo of type Hash"
     end
   end
 
@@ -152,12 +156,12 @@ RSpec.describe Virtus::Matchers::HaveAttributeMatcher do
     let(:matcher) { described_class.new(:baz, String) }
 
     it 'should not match' do
-      matcher.matches?(Example).should be_false
+      expect(matcher.matches?(Example)).to be false
     end
 
     it 'should have a failure message' do
       matcher.matches?(Example)
-      matcher.failure_message.should == "expected #{Example} to have attribute baz of type String"
+      expect(matcher.failure_message).to eq "expected #{Example} to have attribute baz of type String"
     end
   end
 

@@ -13,23 +13,23 @@ RSpec.describe Virtus::Matchers::BeAValueObjectMatcher do
 
   context 'when Virtus::ValueObject is included' do
     it 'should match' do
-      matcher.matches?(ExampleValueObject).should be_true
+      expect(matcher.matches?(ExampleValueObject)).to be true
     end
 
     it 'should have a description' do
       matcher.matches?(ExampleValueObject)
-      matcher.description.should == 'be a value object'
+      expect(matcher.description).to eq 'be a value object'
     end
   end
 
   context 'when Virtus::ValueObject is not included' do
     it 'should not match' do
-      matcher.matches?(Example).should be_false
+      expect(matcher.matches?(Example)).to be false
     end
 
     it 'should have a failure message' do
       matcher.matches?(Example)
-      matcher.failure_message.should == "expected #{Example} to be a value object"
+      expect(matcher.failure_message).to eq "expected #{Example} to be a value object"
     end
   end
 end

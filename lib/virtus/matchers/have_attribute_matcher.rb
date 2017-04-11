@@ -84,6 +84,9 @@ module Virtus
           hash[attribute.name] = "val"
         end.merge(@name => "val")
         klass.new(attributes)
+      rescue => e
+        warn "NOTE: Due to the complexity of putting the right value for the attributes, please pass in an instance that has already been properly initialized"
+        raise e
       end
     end
 

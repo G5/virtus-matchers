@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Accept subjects that are instances of the class being tested
 
+### Changed
+- Must explicitly require `virtus/matchers/rspec` for RSpec integration
+
 ## [0.3.0] - 2016-08-12
 ### Added
 - Only include matchers with RSpec specs that are tagged: `type: :virtus`

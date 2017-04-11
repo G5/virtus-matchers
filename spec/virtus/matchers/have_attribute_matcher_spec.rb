@@ -232,4 +232,11 @@ RSpec.describe Virtus::Matchers::HaveAttributeMatcher do
       expect(matcher.description).to eq 'have attribute lenient of type String and is strict'
     end
   end
+
+  context "subject is an instance" do
+    it "matches" do
+      matcher = described_class.new(:strict, String)
+      expect(matcher.matches?(Example.new(strict: "strict"))).to be true
+    end
+  end
 end

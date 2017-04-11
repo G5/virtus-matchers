@@ -23,8 +23,10 @@ module Virtus
         self
       end
 
-      def matches?(klass)
-        @klass = klass
+      def matches?(klass_or_instance)
+        @instance = instance_from(klass_or_instance)
+        @klass = @instance.class
+
         @attribute = @klass.attribute_set[@name]
         return false unless @attribute
 
@@ -69,6 +71,19 @@ module Virtus
 
       def coercer_description
         @custom_coercer && " coerced with #{@attribute.coercer}"
+      end
+
+      def instance_from(klass_or_instance)
+        unless klass_or_instance.respond_to?(:attribute_set)
+          return klass_or_instance
+        end
+
+        klass = klass_or_instance
+        strict_attributes = klass.attribute_set.select(&:strict?)
+        attributes = strict_attributes.each_with_object({}) do |attribute, hash|
+          hash[attribute.name] = "val"
+        end.merge(@name => "val")
+        klass.new(attributes)
       end
     end
 
